@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<title>Chrome Audio Grabber - Settings</title>
+
+		<script src="../js/jquery.js"></script>
+		<script src="../js/config.js"></script>
+		<script src="../js/options.js"></script>
+
+		<style type="text/css">
+			dt {
+				margin-top: 12px;
+			}
+
+			dt input {
+				float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<dl style="width: 300px;">
+			<dt>WebSocket Host:
+				<input type="text" data-link="websocketServer"></input>
+			</dt>
+
+			<dt>WebSocket Replay:
+				<input type="checkbox" data-link="websocketReplay"></input>
+			</dt>
+
+			<dt>Buffer Size:
+				<input type="number" data-link="bufferSize"></input>
+			</dt>
+
+			<dt>Number of Channels:
+				<input type="number" data-link="numChannels"></input>
+			</dt>
+		</dl>
+	</body>
+</html>
