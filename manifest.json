@@ -7,9 +7,9 @@
 
 	"browser_action": {
 		"default_icon": "icon.png",
-		"default_title": "Capture Audio"
+		"default_title": "Capture Audio",
+		"default_popup": "ui/html/popup.html"
 	},
-	"options_page": "ui/html/options.html",
 
 	"permissions": [
 		"<all_urls>",
@@ -19,6 +19,7 @@
 
 	"background": {
 		"scripts": [
+			"js/lockr.js",
 			"js/config.js",
 			"js/capture.js",
 			"js/modes.js",
