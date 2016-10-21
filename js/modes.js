@@ -6,56 +6,68 @@ var captureModes = window.captureModes = { }
 /**
  * Simply pipe input to output
  */
-captureModes.playback = function(captureSettings, startCapture) {
-	var bufferSize = captureSettings.bufferSize,
-		numChannels = captureSettings.numChannels;
-
-	startCapture(function(e) {
-		var input = e.inputBuffer,
-			output = e.outputBuffer;
-
-		for(var channel=0; channel<numChannels; channel++)
-			output.getChannelData(channel).set(input.getChannelData(channel));
-	}, function(done) {
-		done();
-	});
-};
-
-/**
- * Stream capture data via a websocket
- */
-captureModes.websocket = function(captureSettings, startCapture, stopCapture) {
-	var bufferSize = captureSettings.bufferSize,
-		numChannels = captureSettings.numChannels,
-		websocketURL = config.get('websocketURL');
-
-	var ws = new WebSocket(websocketURL);
-
-	ws.onclose = stopCapture;
-
-	ws.onopen = function() {
-		ws.send(numChannels);
+captureModes.playback = {
+	'init': function(captureSettings, startCapture) {
+		var bufferSize = captureSettings.bufferSize,
+			numChannels = captureSettings.numChannels;
 
 		startCapture(function(e) {
 			var input = e.inputBuffer,
-				output = e.outputBuffer,
-				data = new Float32Array(bufferSize * numChannels);
+				output = e.outputBuffer;
 
-			for(var channel=0; channel<numChannels; channel++) {
-				var inputData = input.getChannelData(channel);
-
-				data.set(inputData, bufferSize * channel);
-				// output.getChannelData(channel).set(inputData);
-			}
-
-			data = Float32ToInt16(data);
-
-			ws.send(data);
+			for(var channel=0; channel<numChannels; channel++)
+				output.getChannelData(channel).set(input.getChannelData(channel));
 		}, function(done) {
-			ws.close();
 			done();
 		});
-	};
+	}
+};
+
+/**
+ * Stream captured data via a websocket
+ */
+captureModes.websocket = {
+	'init': function(captureSettings, startCapture, stopCapture) {
+		var bufferSize = captureSettings.bufferSize,
+			numChannels = captureSettings.numChannels,
+			websocketURL = captureSettings.websocketURL;
+
+		var ws = new WebSocket(websocketURL);
+
+		ws.onclose = stopCapture;
+
+		ws.onopen = function() {
+			ws.send(numChannels);
+
+			startCapture(function(e) {
+				var input = e.inputBuffer,
+					output = e.outputBuffer,
+					data = new Float32Array(bufferSize * numChannels);
+
+				for(var channel=0; channel<numChannels; channel++) {
+					var inputData = input.getChannelData(channel);
+
+					data.set(inputData, bufferSize * channel);
+
+					// output.getChannelData(channel).set(inputData);
+				}
+
+				data = Float32ToInt16(data);
+
+				ws.send(data);
+			}, function(done) {
+				ws.close();
+				done();
+			});
+		}
+	},
+	'settings': {
+		'websocketURL': {
+			'name': 'WebSocket URL',
+			'type': 'text',
+			'default': 'ws://127.0.0.1:8080'
+		}
+	}
 };
 
 function Float32ToInt16(buffer) {
@@ -67,3 +79,11 @@ function Float32ToInt16(buffer) {
 
 	return buf.buffer;
 }
+
+// Initialize capture mode settings
+var cmSettings = config.get('captureModeSettings');
+
+for(var mode in captureModes)
+	for(var option in captureModes[mode].settings)
+		if(!(mode in cmSettings) || !(option in cmSettings[mode]))
+			config.captureModeSettings.set(mode, option, captureModes[mode].settings[option].default);	
