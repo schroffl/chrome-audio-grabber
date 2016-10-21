@@ -1,21 +1,25 @@
 'use strict';
 
-var defaults = {
-	'websocketServer': 'ws://127.0.0.1:8080',
-	'websocketReplay': false,
-	'bufferSize': 16384,
-	'numChannels': 2
-};
+var config = window.config = {
+	'get': function(key) {
+		if(!key)
+			return Object.assign({ }, config.defaults, localStorage);
 
-window.config = {
-	'get': function(key, cb) {
-		chrome.storage.sync.get('options', function(options) {
-			cb(key ? (options.options[key] || defaults[key]) : Object.assign({ }, defaults, options.options));
-		});
+		if(key in localStorage)
+			return localStorage[key];
+
+		if(key in config.defaults)
+			return config.defaults[key];
+
+		return null;
 	},
-	'set': function(options, cb) {
-		window.config.get(null, function(opts) {
-			chrome.storage.sync.set({ 'options': Object.assign({ }, opts, options) }, cb);
-		});
+	'set': function(key, val) {
+		localStorage[key] = val;
+	},
+	'defaults': {
+		'bufferSize': 16384,
+		'numChannels': 2,
+		'captureMode': 'playback',
+		'websocketURL': 'ws://127.0.0.1:8080'
 	}
 };
