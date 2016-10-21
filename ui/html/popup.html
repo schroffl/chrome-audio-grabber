@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<script src="../../js/lockr.js"></script>
+		<script src="../js/jquery.js"></script>
+		<script src="../../js/config.js"></script>
+		<script src="../../js/modes.js"></script>
+		<script src="../js/popup.js"></script>
+
+		<link rel="stylesheet" href="../css/bootstrap.css" type="text/css">
+		<link rel="stylesheet" href="../css/main.css" type="text/css">
+	</head>
+	<body>
+		<fieldset class="form-group">
+			<legend>General</legend>
+
+			<label for="buffersize">Buffer Size</label>
+			<select class="form-control" name="buffersize" data-link="bufferSize">
+				<option value="256">256</option>
+				<option value="512">512</option>
+				<option value="1024">1024</option>
+				<option value="2048">2048</option>
+				<option value="4096">4096</option>
+				<option value="8192">8192</option>
+				<option value="16384">16384</option>
+			</select>
+
+			<label for="numChannels">Number Of Channels</label>
+			<input type="number" class="form-control" name="numChannels" data-link="numChannels" min="1" max="2">
+
+			<label for="captureModes">Capture Mode</label>
+			<select class="form-control" name="captureModes" data-link="captureMode">
+			</select>
+		</fieldset>
+
+		<fieldset class="from-group">
+			<legend>Capture Mode Settings</legend>
+			<div id="cmSettingsContainer"></div>
+		</fieldset>
+
+		<hr>
+
+		<input type="button" class="btn btn-primary btn-block" value="Start Recording" data-background-action="startRecord">
+	</body>
+</html>

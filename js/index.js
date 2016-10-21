@@ -6,14 +6,21 @@ var config = window.config,
 
 var current;
 
-chrome.browserAction.onClicked.addListener(function() {
+chrome.runtime.onMessage.addListener(function(action) {
+	if(action !== 'startRecord')
+		return;
+
 	if(current)
 		stopCapture();
 	else {
-		var captureMode =config.get('captureMode'),
+		var mode = config.get('captureMode'),
 			captureSettings = { 'bufferSize': config.get('bufferSize'), 'numChannels': config.get('numChannels') };
 
-		captureModes[captureMode](captureSettings, function(onprocess, cleanup) {
+		var captureMode = captureModes[mode];
+
+		Object.assign(captureSettings, config.captureModeSettings.get(mode));
+
+		captureMode.init(captureSettings, function(onprocess, cleanup) {
 			current = {	'cleanup': cleanup };
 
 			chrome.tabCapture.capture({ 'audio': true }, function(stream) {
