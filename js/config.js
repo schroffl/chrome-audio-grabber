@@ -2,24 +2,45 @@
 
 var config = window.config = {
 	'get': function(key) {
-		if(!key)
-			return Object.assign({ }, config.defaults, localStorage);
+		var value = Lockr.get(key);
 
-		if(key in localStorage)
-			return localStorage[key];
+		if(value)
+			return value;
 
-		if(key in config.defaults)
-			return config.defaults[key];
-
-		return null;
+		if(key in config.defaults) {
+			config.set(key, config.defaults[key]);
+			return Lockr.get(key);
+		}
 	},
 	'set': function(key, val) {
-		localStorage[key] = val;
+		Lockr.set(key, val);
 	},
 	'defaults': {
 		'bufferSize': 16384,
 		'numChannels': 2,
 		'captureMode': 'playback',
-		'websocketURL': 'ws://127.0.0.1:8080'
+		'captureModeSettings': { }
+	},
+	'captureModeSettings': {
+		'get': function(mode, key) {
+			var cmSettings = config.get('captureModeSettings');
+
+			if(!cmSettings.hasOwnProperty(mode))
+				cmSettings[mode] = { };
+
+			if(!key)
+				return cmSettings[mode];
+
+			return cmSettings[mode][key];
+		},
+		'set': function(mode, key, value) {
+			var cmSettings = config.get('captureModeSettings');
+
+			if(!cmSettings.hasOwnProperty(mode))
+				cmSettings[mode] = { };
+
+			cmSettings[mode][key] = value;
+			Lockr.set('captureModeSettings', cmSettings);
+		}
 	}
 };
