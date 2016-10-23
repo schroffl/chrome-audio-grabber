@@ -4,7 +4,7 @@ const url = require('url');
 const qs = require('querystring');
 
 const WebSocketServer = require('ws').Server;
-const wss = new WebSocketServer({ 'port': 1337 });
+const wss = new WebSocketServer({ 'port': 8080 });
 
 const Speaker = require('speaker');
 
