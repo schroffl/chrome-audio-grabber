@@ -20,7 +20,8 @@ captureModes.playback = {
 		}, function(done) {
 			done();
 		});
-	}
+	},
+	'name': 'Playback'
 };
 
 /**
@@ -32,13 +33,11 @@ captureModes.websocket = {
 			numChannels = captureSettings.numChannels,
 			websocketURL = captureSettings.websocketURL;
 
-		var ws = new WebSocket(websocketURL);
+		var ws = new WebSocket(websocketURL + '?numChannels=' + numChannels + '&bufferSize=' + bufferSize);
 
 		ws.onclose = stopCapture;
 
 		ws.onopen = function() {
-			ws.send(numChannels);
-
 			startCapture(function(e) {
 				var input = e.inputBuffer,
 					output = e.outputBuffer,
@@ -48,7 +47,6 @@ captureModes.websocket = {
 					var inputData = input.getChannelData(channel);
 
 					data.set(inputData, bufferSize * channel);
-
 					// output.getChannelData(channel).set(inputData);
 				}
 
@@ -61,6 +59,7 @@ captureModes.websocket = {
 			});
 		}
 	},
+	'name': 'Stream Via WebSocket',
 	'settings': {
 		'websocketURL': {
 			'name': 'WebSocket URL',
@@ -77,7 +76,7 @@ function Float32ToInt16(buffer) {
 	for(var i=0; i<len; i++)
 		buf[i] = buffer[i] * 0x8000;
 
-	return buf.buffer;
+	return buf;
 }
 
 // Initialize capture mode settings
