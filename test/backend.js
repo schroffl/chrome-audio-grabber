@@ -1,7 +1,7 @@
 'use strict';
 
 const url = require('url');
-const qs = require('qs');
+const qs = require('querystring');
 
 const WebSocketServer = require('ws').Server;
 const wss = new WebSocketServer({ 'port': 1337 });
