@@ -5,7 +5,7 @@ var config = window.config,
 
 $(function() {
 	for(var mode in captureModes) {
-		var name = mode;
+		var name = captureModes[mode].name || mode;
 
 		$('select[name=captureModes]').append('<option value="' + mode + '">' + name + '</option>');
 	}
@@ -46,9 +46,15 @@ $(function() {
 });
 
 function loadCaptureModeSettings(mode) {
-	var cmSettingsMeta = captureModes[mode].settings;
+	var cmSettingsMeta = captureModes[mode].settings || { },
+		amount = Object.keys(cmSettingsMeta).length;
 
 	$('#cmSettingsContainer').empty();
+
+	if(amount > 0)
+		$('#cmSettings').show();
+	else
+		$('#cmSettings').hide();
 
 	for(var option in cmSettingsMeta) {
 		var value = config.captureModeSettings.get(mode, option) || cmSettingsMeta[option].default,

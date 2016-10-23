@@ -4,3 +4,10 @@ body {
 
 	background-color: white;
 }
+
+.group {
+	margin-bottom: 12px;
+}
+.group:last-child {
+	margin-bottom: 0px;
+}

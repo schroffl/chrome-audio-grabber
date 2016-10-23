@@ -13,26 +13,31 @@
 		<fieldset class="form-group">
 			<legend>General</legend>
 
-			<label for="buffersize">Buffer Size</label>
-			<select class="form-control" name="buffersize" data-link="bufferSize">
-				<option value="256">256</option>
-				<option value="512">512</option>
-				<option value="1024">1024</option>
-				<option value="2048">2048</option>
-				<option value="4096">4096</option>
-				<option value="8192">8192</option>
-				<option value="16384">16384</option>
-			</select>
+			<div class="group">
+				<label for="buffersize">Buffer Size</label>
+				<select class="form-control" name="buffersize" data-link="bufferSize">
+					<option value="256">256</option>
+					<option value="512">512</option>
+					<option value="1024">1024</option>
+					<option value="2048">2048</option>
+					<option value="4096">4096</option>
+					<option value="8192">8192</option>
+					<option value="16384">16384</option>
+				</select>
+			</div>
 
-			<label for="numChannels">Number Of Channels</label>
-			<input type="number" class="form-control" name="numChannels" data-link="numChannels" min="1" max="2">
+			<div class="group">
+				<label for="numChannels">Number Of Channels</label>
+				<input type="number" class="form-control" name="numChannels" data-link="numChannels" min="1" max="32">
+			</div>
 
-			<label for="captureModes">Capture Mode</label>
-			<select class="form-control" name="captureModes" data-link="captureMode">
-			</select>
+			<div class="group">
+				<label for="captureModes">Capture Mode</label>
+				<select class="form-control" name="captureModes" data-link="captureMode"></select>
+			</div>
 		</fieldset>
 
-		<fieldset class="from-group">
+		<fieldset class="from-group" id="cmSettings">
 			<legend>Capture Mode Settings</legend>
 			<div id="cmSettingsContainer"></div>
 		</fieldset>
