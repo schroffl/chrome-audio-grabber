@@ -1,0 +1,20 @@
+{
+  "name": "chrome-audio-grabber",
+  "version": "0.1.0",
+  "description": "",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schroffl/chrome-audio-grabber.git"
+  },
+  "author": "schroffl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/schroffl/chrome-audio-grabber/issues"
+  },
+  "homepage": "https://github.com/schroffl/chrome-audio-grabber#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-crx": "^1.0.5"
+  }
+}
