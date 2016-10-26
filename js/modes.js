@@ -74,7 +74,7 @@ function Float32ToInt16(buffer) {
 		buf = new Int16Array(buffer.length);
 
 	for(var i=0; i<len; i++)
-		buf[i] = buffer[i] * 0x8000;
+		buf[i] = buffer[i] * 0x7FFF;
 
 	return buf;
 }
