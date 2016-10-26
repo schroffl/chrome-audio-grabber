@@ -16,7 +16,7 @@
 		"tabCapture",
 		"storage"
 	],
-	
+
 	"background": {
 		"scripts": [
 			"js/lockr.js",
