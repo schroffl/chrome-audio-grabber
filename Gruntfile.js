@@ -5,11 +5,11 @@ module.exports = function(grunt) {
 		'crx': {
 			'publicExtension': {
 				'src': [ 'js/*', 'ui/*', 'icon.png', 'manifest.json' ],
-				'dest': 'dist/chrome-audio-grabber_public.zip'
+				'dest': 'dist/chrome/audio-grabber_public.zip'
 			},
 			'signedExtension': {
 				'src': [ 'js/*', 'ui/*', 'icon.png', 'manifest.json' ],
-				'dest': 'dist/chrome-audio-grabber_signed.crx',
+				'dest': 'dist/chrome/audio-grabber_signed.crx',
 				'options': {
 					'privateKey': '../chrome-audio-grabber.pem'
 				}
