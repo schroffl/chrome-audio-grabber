@@ -10,9 +10,9 @@
 		"default_icon": {
 			"128": "icon.png"
 		},
-		"default_title": "Capture Audio",
-		"default_popup": "ui/html/popup.html"
+		"default_title": "Capture Audio"
 	},
+	"options_page": "ui/html/options.html",
 
 	"permissions": [
 		"<all_urls>",
