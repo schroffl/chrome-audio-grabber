@@ -51,6 +51,6 @@ function stopCapture(err) {
 }
 
 function updateStatus(recording, tabID) {
-	chrome.browserAction.setBadgeBackgroundColor({ 'color': recording ? '#FF0000' : '', 'tabId': tabID });
+	chrome.browserAction.setBadgeBackgroundColor({ 'color': recording ? '#FF0000' : '#4285F4', 'tabId': tabID });
 	chrome.browserAction.setBadgeText({ 'text': recording ? 'REC' : '' });
 }
