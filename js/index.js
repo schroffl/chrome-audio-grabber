@@ -6,10 +6,7 @@ var config = window.config,
 
 var current;
 
-chrome.runtime.onMessage.addListener(function(action) {
-	if(action !== 'startRecord')
-		return;
-
+chrome.browserAction.onClicked.addListener(function() {
 	if(current)
 		stopCapture();
 	else {
@@ -22,8 +19,13 @@ chrome.runtime.onMessage.addListener(function(action) {
 		function startCapture(onprocess, cleanup) {
 			current = {	'cleanup': cleanup };
 
-			chrome.tabCapture.capture({ 'audio': true }, function(stream) {
-				current.captureData = capture.start(captureSettings, stream, onprocess);
+			chrome.tabs.query({ 'active': true, 'currentWindow': true }, function(tabs) {
+				chrome.tabCapture.capture({ 'audio': true }, function(stream) {
+					current.captureData = capture.start(captureSettings, stream, onprocess);
+					current.tabID = tabs.shift().id;
+
+					updateStatus(true, current.tabID);
+				});
 			});
 		}
 
@@ -39,9 +41,16 @@ function stopCapture(err) {
 		capture.stop(current.captureData);
 
 	current.cleanup(function() {
+		updateStatus(false, current.tabID);
+		
 		current = null;
 
 		if(err)
 			throw err;
 	});
+}
+
+function updateStatus(recording, tabID) {
+	chrome.browserAction.setBadgeBackgroundColor({ 'color': recording ? '#FF0000' : '', 'tabId': tabID });
+	chrome.browserAction.setBadgeText({ 'text': recording ? 'REC' : '' });
 }
