@@ -16,22 +16,22 @@ chrome.browserAction.onClicked.addListener(function() {
 
 		Object.assign(captureSettings, config.captureModeSettings.get(mode));
 
-		function startCapture(onprocess, cleanup) {
-			current = {	'cleanup': cleanup };
-
-			chrome.tabs.query({ 'active': true, 'currentWindow': true }, function(tabs) {
-				chrome.tabCapture.capture({ 'audio': true }, function(stream) {
-					current.captureData = capture.start(captureSettings, stream, onprocess);
-					current.tabID = tabs.shift().id;
-
-					updateStatus(true, current.tabID);
-				});
-			});
-		}
-
-		captureMode.init(captureSettings, startCapture, stopCapture);
+		captureMode.init(captureSettings, startCapture.bind(null, captureSettings), stopCapture);
 	}
 });
+
+function startCapture(captureSettings, onprocess, cleanup) {
+	current = {	'cleanup': cleanup };
+
+	chrome.tabs.query({ 'active': true, 'currentWindow': true }, function(tabs) {
+		chrome.tabCapture.capture({ 'audio': true }, function(stream) {
+			current.captureData = capture.start(captureSettings, stream, onprocess);
+			current.tabID = tabs.shift().id;
+
+			updateStatus(true, current.tabID);
+		});
+	});
+}
 
 function stopCapture(err) {
 	if(!current)
